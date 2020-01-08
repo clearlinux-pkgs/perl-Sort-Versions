@@ -4,7 +4,7 @@
 #
 Name     : perl-Sort-Versions
 Version  : 1.62
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/N/NE/NEILB/Sort-Versions-1.62.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/N/NE/NEILB/Sort-Versions-1.62.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsort-versions-perl/libsort-versions-perl_1.62-1.debian.tar.xz
@@ -12,6 +12,7 @@ Summary  : 'a perl 5 module for sorting of revision-like numbers'
 Group    : Development/Tools
 License  : Artistic-1.0 Artistic-1.0-Perl GPL-1.0
 Requires: perl-Sort-Versions-license = %{version}-%{release}
+Requires: perl-Sort-Versions-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 
 %description
@@ -23,6 +24,7 @@ a perl 5 module for sorting of revision-like numbers
 Summary: dev components for the perl-Sort-Versions package.
 Group: Development
 Provides: perl-Sort-Versions-devel = %{version}-%{release}
+Requires: perl-Sort-Versions = %{version}-%{release}
 
 %description dev
 dev components for the perl-Sort-Versions package.
@@ -36,18 +38,28 @@ Group: Default
 license components for the perl-Sort-Versions package.
 
 
+%package perl
+Summary: perl components for the perl-Sort-Versions package.
+Group: Default
+Requires: perl-Sort-Versions = %{version}-%{release}
+
+%description perl
+perl components for the perl-Sort-Versions package.
+
+
 %prep
 %setup -q -n Sort-Versions-1.62
-cd ..
-%setup -q -T -D -n Sort-Versions-1.62 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libsort-versions-perl_1.62-1.debian.tar.xz
+cd %{_builddir}/Sort-Versions-1.62
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Sort-Versions-1.62/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/Sort-Versions-1.62/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -57,7 +69,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -66,7 +78,7 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Sort-Versions
-cp LICENSE %{buildroot}/usr/share/package-licenses/perl-Sort-Versions/LICENSE
+cp %{_builddir}/Sort-Versions-1.62/LICENSE %{buildroot}/usr/share/package-licenses/perl-Sort-Versions/611bb7067cb4a6e6ff1c98d94d402c2704d3567c
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -79,7 +91,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/Sort/Versions.pm
 
 %files dev
 %defattr(-,root,root,-)
@@ -87,4 +98,8 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/perl-Sort-Versions/LICENSE
+/usr/share/package-licenses/perl-Sort-Versions/611bb7067cb4a6e6ff1c98d94d402c2704d3567c
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/Sort/Versions.pm
