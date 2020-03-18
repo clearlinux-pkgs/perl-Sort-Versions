@@ -4,7 +4,7 @@
 #
 Name     : perl-Sort-Versions
 Version  : 1.62
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/N/NE/NEILB/Sort-Versions-1.62.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/N/NE/NEILB/Sort-Versions-1.62.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsort-versions-perl/libsort-versions-perl_1.62-1.debian.tar.xz
@@ -102,4 +102,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.1/Sort/Versions.pm
+/usr/lib/perl5/vendor_perl/5.30.2/Sort/Versions.pm
